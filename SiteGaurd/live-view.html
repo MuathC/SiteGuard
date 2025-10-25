@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Drone View - SiteGuard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="SiteGuard Logo" class="logo-image">
+                <h1>SiteGuard</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="live-view.html" class="active">Live View</a></li>
+                <li><a href="solutions.html">Solutions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Live View Container -->
+    <div class="live-view-container">
+        <h1 class="page-title">Live Drone Feeds</h1>
+
+        <div class="live-view-layout">
+            
+            <!-- Drone Selection Panel -->
+            <aside class="drone-panel">
+                <h2>Active Drones</h2>
+                <div class="drone-list" id="droneList">
+                    
+                    <div class="drone-item active" data-drone-id="1" onclick="switchDrone(1)">
+                        <div class="drone-status-indicator online"></div>
+                        <div class="drone-info">
+                            <h3>Drone 1</h3>
+                            <p class="drone-status">Patrolling Zone A</p>
+                            <div class="drone-stats">
+                                <span>🔋 85%</span>
+                                <span>📡 Excellent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="drone-item" data-drone-id="2" onclick="switchDrone(2)">
+                        <div class="drone-status-indicator online"></div>
+                        <div class="drone-info">
+                            <h3>Drone 2</h3>
+                            <p class="drone-status">Monitoring Fire Alert</p>
+                            <div class="drone-stats">
+                                <span>🔋 92%</span>
+                                <span>📡 Good</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="drone-item" data-drone-id="3" onclick="switchDrone(3)">
+                        <div class="drone-status-indicator warning"></div>
+                        <div class="drone-info">
+                            <h3>Drone 3</h3>
+                            <p class="drone-status">Low Battery - Charging</p>
+                            <div class="drone-stats">
+                                <span>🔋 23%</span>
+                                <span>📡 N/A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="drone-item" data-drone-id="4" onclick="switchDrone(4)">
+                        <div class="drone-status-indicator online"></div>
+                        <div class="drone-info">
+                            <h3>Drone 4</h3>
+                            <p class="drone-status">Perimeter Patrol</p>
+                            <div class="drone-stats">
+                                <span>🔋 78%</span>
+                                <span>📡 Excellent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="drone-item" data-drone-id="5" onclick="switchDrone(5)">
+                        <div class="drone-status-indicator offline"></div>
+                        <div class="drone-info">
+                            <h3>Drone 5</h3>
+                            <p class="drone-status">Offline - Maintenance</p>
+                            <div class="drone-stats">
+                                <span>🔋 0%</span>
+                                <span>📡 N/A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- Main Video Feed -->
+            <main class="video-main">
+                <div class="video-header">
+                    <h2 id="currentDroneTitle">Drone 1 - Live Feed</h2>
+                    <div class="video-controls">
+                        <button class="btn btn-secondary" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+                    </div>
+                </div>
+
+                <!-- Video Container (Gazebo-ready structure) -->
+                <div class="video-container" id="videoContainer">
+                    <!-- This is where Gazebo stream will be integrated -->
+                    <!-- For now, using placeholder with simulated overlays -->
+                    <div class="video-feed" id="videoFeed" data-stream-source="placeholder">
+                        <img src="https://via.placeholder.com/1280x720/34495e/ffffff?text=Drone+1+Feed+-+Ready+for+Gazebo+Integration" alt="Drone Feed" id="videoImage">
+                        
+                        <!-- AI Detection Overlays -->
+                        <div class="detection-overlays" id="detectionOverlays">
+                            <!-- Detections will be added dynamically -->
+                        </div>
+
+                        <!-- Drone Telemetry Overlay -->
+                        <div class="telemetry-overlay">
+                            <div class="telemetry-item">
+                                <span class="telemetry-label">Altitude:</span>
+                                <span class="telemetry-value" id="altitude">50m</span>
+                            </div>
+                            <div class="telemetry-item">
+                                <span class="telemetry-label">Speed:</span>
+                                <span class="telemetry-value" id="speed">10 m/s</span>
+                            </div>
+                            <div class="telemetry-item">
+                                <span class="telemetry-label">Battery:</span>
+                                <span class="telemetry-value" id="battery">85%</span>
+                            </div>
+                            <div class="telemetry-item">
+                                <span class="telemetry-label">GPS:</span>
+                                <span class="telemetry-value" id="gps">37.7749, -122.4194</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Status Indicator -->
+                    <div class="stream-status connected" id="streamStatus">
+                        <span class="status-dot"></span>
+                        <span>Live Stream Active</span>
+                    </div>
+                </div>
+
+                <!-- Stream Info -->
+                <div class="stream-info">
+                    <p><strong>Stream Source:</strong> <span id="streamSource">Placeholder (Ready for Gazebo)</span></p>
+                    <p><strong>Resolution:</strong> <span id="streamResolution">1280x720</span></p>
+                    <p><strong>FPS:</strong> <span id="streamFps">30</span></p>
+                    <p><strong>Latency:</strong> <span id="streamLatency">45ms</span></p>
+                </div>
+            </main>
+
+            <!-- Event Stream Sidebar -->
+            <aside class="event-stream">
+                <h2>Live Event Log</h2>
+                <p class="event-drone-label" id="eventDroneLabel">Drone 1</p>
+                <div class="event-list" id="eventList">
+                    <!-- Events will be dynamically generated by JavaScript -->
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Gazebo Integration Script (commented for future use) -->
+    <script>
+        /* GAZEBO INTEGRATION TEMPLATE
+         * Uncomment and modify when connecting to Gazebo
+         * 
+         * // Example: Connect to Gazebo ROS bridge or video stream
+         * const GAZEBO_CONFIG = {
+         *     rosbridge_url: 'ws://localhost:9090',  // ROS bridge WebSocket
+         *     video_topic: '/drone_1/camera/image',  // Video topic
+         *     telemetry_topic: '/drone_1/telemetry' // Telemetry topic
+         * };
+         * 
+         * function connectToGazebo(droneId) {
+         *     // Initialize ROS connection
+         *     const ros = new ROSLIB.Ros({
+         *         url: GAZEBO_CONFIG.rosbridge_url
+         *     });
+         *     
+         *     // Subscribe to video stream
+         *     const videoTopic = new ROSLIB.Topic({
+         *         ros: ros,
+         *         name: GAZEBO_CONFIG.video_topic,
+         *         messageType: 'sensor_msgs/Image'
+         *     });
+         *     
+         *     videoTopic.subscribe(function(message) {
+         *         // Update video feed with Gazebo stream
+         *         updateVideoFeed(message);
+         *     });
+         *     
+         *     // Subscribe to telemetry
+         *     const telemetryTopic = new ROSLIB.Topic({
+         *         ros: ros,
+         *         name: GAZEBO_CONFIG.telemetry_topic,
+         *         messageType: 'nav_msgs/Odometry'
+         *     });
+         *     
+         *     telemetryTopic.subscribe(function(message) {
+         *         updateTelemetry(message);
+         *     });
+         * }
+         */
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

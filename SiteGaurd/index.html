@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteGuard - Intelligent Site Monitoring</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="SiteGuard Logo" class="logo-image">
+                <h1>SiteGuard</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="live-view.html">Live View</a></li>
+                <li><a href="solutions.html">Solutions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">SiteGuard: Intelligent Site Monitoring for Enhanced Safety & Efficiency</h1>
+            <p class="hero-subtitle">Real-time AI Vision from Above. Proactive Alerts. Smarter Sites.</p>
+            <a href="#dashboard" class="btn btn-primary">View Live Dashboard</a>
+        </div>
+        <div class="hero-overlay"></div>
+    </section>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboard">
+        
+        <!-- Critical Alerts Section -->
+        <section class="critical-alerts">
+            <h2 class="section-title">Critical Alerts & Immediate Actions</h2>
+            <div class="alerts-grid">
+                
+                <!-- Fire Alert -->
+                <div class="alert-card alert-fire">
+                    <div class="alert-header">
+                        <span class="alert-icon">🔥</span>
+                        <h3>FIRE ALERT!</h3>
+                        <span class="alert-badge critical">Critical</span>
+                    </div>
+                    <div class="alert-body">
+                        <div class="alert-info">
+                            <p><strong>Location:</strong> Zone 3 - Northeast Corner</p>
+                            <p><strong>Time:</strong> <span id="fire-time">2 minutes ago</span></p>
+                        </div>
+                        <div class="alert-thumbnail">
+                            <img src="https://via.placeholder.com/200x150/ff4444/ffffff?text=Fire+Detected" alt="Fire Detection">
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="viewLiveFeed(1)">View Live Feed</button>
+                </div>
+
+                <!-- PPE Violation -->
+                <div class="alert-card alert-ppe">
+                    <div class="alert-header">
+                        <span class="alert-icon">⚠️</span>
+                        <h3>PPE Violation</h3>
+                        <span class="alert-badge warning">Warning</span>
+                    </div>
+                    <div class="alert-body">
+                        <div class="alert-info">
+                            <p><strong>Type:</strong> Worker without Hard Hat</p>
+                            <p><strong>Location:</strong> Loading Bay 2</p>
+                            <p><strong>Time:</strong> <span id="ppe-time">8 minutes ago</span></p>
+                        </div>
+                        <div class="alert-thumbnail">
+                            <img src="https://via.placeholder.com/200x150/ff9800/ffffff?text=PPE+Violation" alt="PPE Violation">
+                        </div>
+                    </div>
+                    <button class="btn btn-warning">Review Incident</button>
+                </div>
+
+                <!-- Intruder Alert -->
+                <div class="alert-card alert-intruder">
+                    <div class="alert-header">
+                        <span class="alert-icon">🚨</span>
+                        <h3>Intruder Detected</h3>
+                        <span class="alert-badge critical">Critical</span>
+                    </div>
+                    <div class="alert-body">
+                        <div class="alert-info">
+                            <p><strong>Location:</strong> Perimeter Fence - West</p>
+                            <p><strong>Time:</strong> <span id="intruder-time">15 minutes ago</span></p>
+                        </div>
+                        <div class="alert-thumbnail">
+                            <img src="https://via.placeholder.com/200x150/9c27b0/ffffff?text=Intruder+Alert" alt="Intruder Detection">
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="viewLiveFeed(2)">View Live Feed</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Site Overview Map -->
+        <section class="site-map-section">
+            <h2 class="section-title">Site-wide Drone Activity & Alerts</h2>
+            <div class="site-map-container">
+                <div class="site-map" id="siteMap">
+                    <div class="index-map-background">
+                        <!-- Roads/Streets -->
+                        <div class="map-road horizontal" style="top: 25%;"></div>
+                        <div class="map-road horizontal" style="top: 50%;"></div>
+                        <div class="map-road horizontal" style="top: 75%;"></div>
+                        <div class="map-road vertical" style="left: 33%;"></div>
+                        <div class="map-road vertical" style="left: 66%;"></div>
+                        
+                        <!-- Buildings/Areas -->
+                        <div class="map-building" style="top: 5%; left: 5%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 5%; left: 37%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 5%; left: 70%; width: 25%; height: 18%;"></div>
+                        
+                        <div class="map-building" style="top: 30%; left: 5%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 30%; left: 37%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 30%; left: 70%; width: 25%; height: 18%;"></div>
+                        
+                        <div class="map-building" style="top: 55%; left: 5%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 55%; left: 37%; width: 25%; height: 18%;"></div>
+                        <div class="map-building" style="top: 55%; left: 70%; width: 25%; height: 18%;"></div>
+                        
+                        <div class="map-building" style="top: 80%; left: 5%; width: 25%; height: 15%;"></div>
+                        <div class="map-building" style="top: 80%; left: 37%; width: 25%; height: 15%;"></div>
+                        <div class="map-building" style="top: 80%; left: 70%; width: 25%; height: 15%;"></div>
+                    </div>
+                    
+                    <!-- Drone Markers -->
+                    <div class="drone-marker" style="top: 30%; left: 25%;" data-drone="1">
+                        <div class="marker-icon drone-active">🚁</div>
+                        <div class="marker-tooltip">Drone 1 - Patrolling Zone A</div>
+                    </div>
+                    
+                    <div class="drone-marker" style="top: 60%; left: 70%;" data-drone="2">
+                        <div class="marker-icon drone-active">🚁</div>
+                        <div class="marker-tooltip">Drone 2 - Monitoring Fire</div>
+                    </div>
+                    
+                    <div class="drone-marker" style="top: 45%; left: 50%;" data-drone="3">
+                        <div class="marker-icon drone-charging">🚁</div>
+                        <div class="marker-tooltip">Drone 3 - Charging</div>
+                    </div>
+
+                    <!-- Alert Markers -->
+                    <div class="alert-marker fire-marker" style="top: 35%; left: 75%;">
+                        <div class="marker-icon">🔥</div>
+                        <div class="marker-tooltip">Fire Detection - Zone 3</div>
+                    </div>
+                    
+                    <div class="alert-marker ppe-marker" style="top: 70%; left: 30%;">
+                        <div class="marker-icon">⚠️</div>
+                        <div class="marker-tooltip">PPE Violation - Loading Bay 2</div>
+                    </div>
+                    
+                    <div class="alert-marker intruder-marker" style="top: 50%; left: 10%;">
+                        <div class="marker-icon">🚨</div>
+                        <div class="marker-tooltip">Intruder - West Perimeter</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="metrics-section">
+            <h2 class="section-title">Operational Metrics & Trends</h2>
+            <div class="metrics-grid">
+                
+                <div class="metric-card">
+                    <div class="metric-icon">🚁</div>
+                    <h3>Total Drones Active</h3>
+                    <div class="metric-value">3 <span class="metric-total">/ 5</span></div>
+                    <div class="metric-status online">Online</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">⚠️</div>
+                    <h3>Safety Incidents (24h)</h3>
+                    <div class="metric-value">5</div>
+                    <div class="metric-breakdown">
+                        <span>PPE: 3</span>
+                        <span>Intrusion: 2</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">🦺</div>
+                    <h3>PPE Compliance Rate</h3>
+                    <div class="metric-value">92%</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 92%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">🚪</div>
+                    <h3>Unauthorized Entries (Weekly)</h3>
+                    <div class="metric-value">7</div>
+                    <div class="metric-trend down">↓ 12% from last week</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <h3>Site Activity Index</h3>
+                    <div class="metric-value">Medium</div>
+                    <div class="activity-indicator medium"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Recent Activity Log -->
+        <section class="activity-log-section">
+            <h2 class="section-title">Recent Events Feed</h2>
+            <div class="activity-log" id="activityLog">
+                <!-- Activity items will be dynamically generated by JavaScript -->
+            </div>
+        </section>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

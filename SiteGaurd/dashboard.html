@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SiteGuard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="SiteGuard Logo" class="logo-image">
+                <h1>SiteGuard</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="live-view.html">Live View</a></li>
+                <li><a href="solutions.html">Solutions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-page">
+        <div class="dashboard-header">
+            <h1>Operational Dashboard</h1>
+            <div class="dashboard-time">
+                <span id="currentDate">Loading...</span>
+                <span id="currentTime">Loading...</span>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            
+            <!-- Quick Stats Row -->
+            <section class="quick-stats">
+                <div class="stat-box stat-active">
+                    <div class="stat-icon">🚁</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="activeDrones">3</div>
+                        <div class="stat-label">Active Drones</div>
+                    </div>
+                    <div class="stat-status online">Online</div>
+                </div>
+
+                <div class="stat-box stat-alerts">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="activeAlerts">2</div>
+                        <div class="stat-label">Active Alerts</div>
+                    </div>
+                    <div class="stat-status critical">Critical</div>
+                </div>
+
+                <div class="stat-box stat-monitored">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="areaMonitored">12.5</div>
+                        <div class="stat-label">Hectares Monitored</div>
+                    </div>
+                    <div class="stat-trend">↑ 8%</div>
+                </div>
+
+                <div class="stat-box stat-compliance">
+                    <div class="stat-icon">🦺</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="safetyScore">92%</div>
+                        <div class="stat-label">Safety Compliance</div>
+                    </div>
+                    <div class="stat-trend positive">+5%</div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                
+                <!-- Left Column -->
+                <div class="dashboard-left">
+                    
+                    <!-- Drone Fleet Status -->
+                    <section class="dashboard-card drone-fleet-card">
+                        <h2 class="card-title">Drone Fleet Status</h2>
+                        <div class="drone-fleet-grid" id="droneFleetGrid">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Recent Alerts -->
+                    <section class="dashboard-card alerts-summary-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Alerts</h2>
+                            <a href="#" class="view-all-link">View All →</a>
+                        </div>
+                        <div class="alerts-summary-list" id="alertsSummaryList">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Center Column -->
+                <div class="dashboard-center">
+                    
+                    <!-- Site Overview Map -->
+                    <section class="dashboard-card site-overview-card">
+                        <h2 class="card-title">Site Overview</h2>
+                        <div class="site-overview-map">
+                            <div class="map-background">
+                                <!-- Roads/Streets -->
+                                <div class="dashboard-road horizontal" style="top: 30%;"></div>
+                                <div class="dashboard-road horizontal" style="top: 60%;"></div>
+                                <div class="dashboard-road vertical" style="left: 40%;"></div>
+                                <div class="dashboard-road vertical" style="left: 70%;"></div>
+                                
+                                <!-- Buildings/Areas -->
+                                <div class="dashboard-building" style="top: 5%; left: 5%; width: 30%; height: 22%;"></div>
+                                <div class="dashboard-building" style="top: 5%; left: 45%; width: 20%; height: 22%;"></div>
+                                <div class="dashboard-building" style="top: 5%; left: 75%; width: 20%; height: 22%;"></div>
+                                
+                                <div class="dashboard-building" style="top: 35%; left: 5%; width: 30%; height: 22%;"></div>
+                                <div class="dashboard-building" style="top: 35%; left: 45%; width: 20%; height: 22%;"></div>
+                                <div class="dashboard-building" style="top: 35%; left: 75%; width: 20%; height: 22%;"></div>
+                                
+                                <div class="dashboard-building" style="top: 65%; left: 5%; width: 30%; height: 30%;"></div>
+                                <div class="dashboard-building" style="top: 65%; left: 45%; width: 20%; height: 30%;"></div>
+                                <div class="dashboard-building" style="top: 65%; left: 75%; width: 20%; height: 30%;"></div>
+                            </div>
+                            
+                            <!-- Live drone markers -->
+                            <div class="map-drone-marker" style="top: 30%; left: 25%;" data-status="active">
+                                <div class="marker-pulse"></div>
+                                <span class="marker-label">D1</span>
+                            </div>
+                            
+                            <div class="map-drone-marker" style="top: 60%; left: 70%;" data-status="active">
+                                <div class="marker-pulse"></div>
+                                <span class="marker-label">D2</span>
+                            </div>
+                            
+                            <div class="map-drone-marker" style="top: 45%; left: 50%;" data-status="charging">
+                                <span class="marker-label">D3</span>
+                            </div>
+
+                            <!-- Alert markers -->
+                            <div class="map-alert-marker" style="top: 35%; left: 75%;" data-type="fire">
+                                <span class="alert-marker-icon">🔥</span>
+                            </div>
+                            
+                            <div class="map-alert-marker" style="top: 70%; left: 30%;" data-type="warning">
+                                <span class="alert-marker-icon">⚠️</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Performance Charts -->
+                    <section class="dashboard-card performance-card">
+                        <h2 class="card-title">Today's Performance</h2>
+                        <div class="performance-metrics">
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Flight Hours</span>
+                                    <span class="metric-value-main">18.5h</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 77%;"></div>
+                                </div>
+                                <div class="metric-footer">77% of daily target</div>
+                            </div>
+
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Detection Rate</span>
+                                    <span class="metric-value-main">95.8%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 95.8%;"></div>
+                                </div>
+                                <div class="metric-footer">Excellent performance</div>
+                            </div>
+
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Incidents Resolved</span>
+                                    <span class="metric-value-main">8/10</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill warning" style="width: 80%;"></div>
+                                </div>
+                                <div class="metric-footer">2 pending review</div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="dashboard-right">
+                    
+                    <!-- System Health -->
+                    <section class="dashboard-card system-health-card">
+                        <h2 class="card-title">System Health</h2>
+                        <div class="health-items">
+                            <div class="health-item">
+                                <div class="health-indicator online"></div>
+                                <div class="health-info">
+                                    <div class="health-name">ROS Bridge</div>
+                                    <div class="health-status">Connected</div>
+                                </div>
+                            </div>
+
+                            <div class="health-item">
+                                <div class="health-indicator online"></div>
+                                <div class="health-info">
+                                    <div class="health-name">AI Processing</div>
+                                    <div class="health-status">Running</div>
+                                </div>
+                            </div>
+
+                            <div class="health-item">
+                                <div class="health-indicator online"></div>
+                                <div class="health-info">
+                                    <div class="health-name">Video Streams</div>
+                                    <div class="health-status">3/5 Active</div>
+                                </div>
+                            </div>
+
+                            <div class="health-item">
+                                <div class="health-indicator warning"></div>
+                                <div class="health-info">
+                                    <div class="health-name">Storage</div>
+                                    <div class="health-status">78% Used</div>
+                                </div>
+                            </div>
+
+                            <div class="health-item">
+                                <div class="health-indicator online"></div>
+                                <div class="health-info">
+                                    <div class="health-name">Database</div>
+                                    <div class="health-status">Optimal</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Live Activity Feed -->
+                    <section class="dashboard-card activity-feed-card">
+                        <h2 class="card-title">Live Activity Feed</h2>
+                        <div class="activity-feed" id="activityFeed">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="dashboard-card quick-actions-card">
+                        <h2 class="card-title">Quick Actions</h2>
+                        <div class="quick-actions-grid">
+                            <button class="action-btn" onclick="window.location.href='live-view.html'">
+                                <span class="action-icon">📹</span>
+                                <span class="action-label">View Feeds</span>
+                            </button>
+                            <button class="action-btn">
+                                <span class="action-icon">📊</span>
+                                <span class="action-label">Reports</span>
+                            </button>
+                            <button class="action-btn">
+                                <span class="action-icon">⚙️</span>
+                                <span class="action-label">Settings</span>
+                            </button>
+                            <button class="action-btn">
+                                <span class="action-icon">🔔</span>
+                                <span class="action-label">Alerts</span>
+                            </button>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Dashboard-specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeDashboardPage === 'function') {
+                initializeDashboardPage();
+            }
+        });
+    </script>
+</body>
+</html>
+
