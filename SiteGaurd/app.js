@@ -205,6 +205,9 @@ function initializeLiveView() {
     // Highlight active drone
     updateActiveDrone(DRONE_CONFIG.currentDrone);
     
+    // Load the correct video for the current drone
+    updateVideoFeed(DRONE_CONFIG.currentDrone);
+    
     // Generate event stream
     generateEventStream(DRONE_CONFIG.currentDrone);
     
@@ -256,17 +259,33 @@ function updateActiveDrone(droneId) {
 }
 
 function updateVideoFeed(droneId) {
-    const videoImage = document.getElementById('videoImage');
+    const videoElement = document.getElementById('videoElement');
     const streamSource = document.getElementById('streamSource');
     
-    if (videoImage) {
-        videoImage.src = `https://via.placeholder.com/1280x720/34495e/ffffff?text=Drone+${droneId}+Feed+-+Ready+for+Gazebo+Integration`;
-        videoImage.alt = `Drone ${droneId} Feed`;
+    if (videoElement) {
+        // Switch between videos based on drone ID
+        if (droneId === 1) {
+            videoElement.src = 'construct.mp4';
+        } else if (droneId === 2) {
+            videoElement.src = 'fire.mp4';
+        } else {
+            // For other drones, default to construct.mp4
+            videoElement.src = 'construct.mp4';
+        }
+        // Ensure video plays after source change
+        videoElement.load();
+        videoElement.play().catch(err => console.log('Video play prevented:', err));
     }
     
     if (streamSource) {
         const drone = DRONE_CONFIG.drones.find(d => d.id === droneId);
-        streamSource.textContent = `Placeholder (Gazebo Topic: ${drone?.gazebo_topic || 'N/A'})`;
+        if (droneId === 1) {
+            streamSource.textContent = `Construction Site Video (Local)`;
+        } else if (droneId === 2) {
+            streamSource.textContent = `Fire Monitoring Video (Local)`;
+        } else {
+            streamSource.textContent = `Placeholder (Gazebo Topic: ${drone?.gazebo_topic || 'N/A'})`;
+        }
     }
     
     // Clear and regenerate detections for new feed

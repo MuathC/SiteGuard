@@ -111,8 +111,10 @@
                 <div class="video-container" id="videoContainer">
                     <!-- This is where Gazebo stream will be integrated -->
                     <!-- For now, using placeholder with simulated overlays -->
-                    <div class="video-feed" id="videoFeed" data-stream-source="placeholder">
-                        <img src="https://via.placeholder.com/1280x720/34495e/ffffff?text=Drone+1+Feed+-+Ready+for+Gazebo+Integration" alt="Drone Feed" id="videoImage">
+                    <div class="video-feed" id="videoFeed" data-stream-source="local-video">
+                        <video src="construct.mp4" autoplay loop muted playsinline id="videoElement" style="width: 100%; height: 100%; object-fit: cover;">
+                            Your browser does not support the video tag.
+                        </video>
                         
                         <!-- AI Detection Overlays -->
                         <div class="detection-overlays" id="detectionOverlays">
