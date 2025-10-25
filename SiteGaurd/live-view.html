@@ -109,16 +109,18 @@
 
                 <!-- Video Container (Gazebo-ready structure) -->
                 <div class="video-container" id="videoContainer">
-                    <!-- This is where Gazebo stream will be integrated -->
-                    <!-- For now, using placeholder with simulated overlays -->
-                    <div class="video-feed" id="videoFeed" data-stream-source="local-video">
-                        <video src="construct.mp4" autoplay loop muted playsinline id="videoElement" style="width: 100%; height: 100%; object-fit: cover;">
-                            Your browser does not support the video tag.
-                        </video>
+                    <!-- Live Object Detection Stream from Flask Server -->
+                    <div class="video-feed" id="videoFeed" data-stream-source="flask-stream">
+                        <!-- MJPEG Stream from Flask Server -->
+                        <img src="http://localhost:5000/video_feed" 
+                             id="videoElement" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             alt="Live Detection Stream"
+                             onerror="handleStreamError()">
                         
-                        <!-- AI Detection Overlays -->
+                        <!-- AI Detection Overlays (detections are already drawn on the stream) -->
                         <div class="detection-overlays" id="detectionOverlays">
-                            <!-- Detections will be added dynamically -->
+                            <!-- Detections are rendered on the video by YOLOv8 -->
                         </div>
 
                         <!-- Drone Telemetry Overlay -->
@@ -151,10 +153,10 @@
 
                 <!-- Stream Info -->
                 <div class="stream-info">
-                    <p><strong>Stream Source:</strong> <span id="streamSource">Placeholder (Ready for Gazebo)</span></p>
+                    <p><strong>Stream Source:</strong> <span id="streamSource">Flask Server (YOLOv8 Detection)</span></p>
                     <p><strong>Resolution:</strong> <span id="streamResolution">1280x720</span></p>
-                    <p><strong>FPS:</strong> <span id="streamFps">30</span></p>
-                    <p><strong>Latency:</strong> <span id="streamLatency">45ms</span></p>
+                    <p><strong>FPS:</strong> <span id="streamFps">Loading...</span></p>
+                    <p><strong>Status:</strong> <span id="streamStatus">Connecting...</span></p>
                 </div>
             </main>
 
@@ -170,48 +172,48 @@
         </div>
     </div>
 
-    <!-- Gazebo Integration Script (commented for future use) -->
+    <!-- Flask Stream Integration Script -->
     <script>
-        /* GAZEBO INTEGRATION TEMPLATE
-         * Uncomment and modify when connecting to Gazebo
-         * 
-         * // Example: Connect to Gazebo ROS bridge or video stream
-         * const GAZEBO_CONFIG = {
-         *     rosbridge_url: 'ws://localhost:9090',  // ROS bridge WebSocket
-         *     video_topic: '/drone_1/camera/image',  // Video topic
-         *     telemetry_topic: '/drone_1/telemetry' // Telemetry topic
-         * };
-         * 
-         * function connectToGazebo(droneId) {
-         *     // Initialize ROS connection
-         *     const ros = new ROSLIB.Ros({
-         *         url: GAZEBO_CONFIG.rosbridge_url
-         *     });
-         *     
-         *     // Subscribe to video stream
-         *     const videoTopic = new ROSLIB.Topic({
-         *         ros: ros,
-         *         name: GAZEBO_CONFIG.video_topic,
-         *         messageType: 'sensor_msgs/Image'
-         *     });
-         *     
-         *     videoTopic.subscribe(function(message) {
-         *         // Update video feed with Gazebo stream
-         *         updateVideoFeed(message);
-         *     });
-         *     
-         *     // Subscribe to telemetry
-         *     const telemetryTopic = new ROSLIB.Topic({
-         *         ros: ros,
-         *         name: GAZEBO_CONFIG.telemetry_topic,
-         *         messageType: 'nav_msgs/Odometry'
-         *     });
-         *     
-         *     telemetryTopic.subscribe(function(message) {
-         *         updateTelemetry(message);
-         *     });
-         * }
-         */
+        // Flask server configuration
+        const FLASK_SERVER = 'http://localhost:5000';
+        
+        // Handle stream errors
+        function handleStreamError() {
+            const statusEl = document.getElementById('streamStatus');
+            const streamStatusEl = document.getElementById('streamStatus');
+            if (statusEl) statusEl.textContent = 'Connection Error - Check if server is running';
+            if (streamStatusEl) streamStatusEl.classList.remove('connected');
+            console.error('Stream connection failed. Make sure Flask server is running on port 5000');
+        }
+        
+        // Update FPS and status from Flask server
+        async function updateStreamStatus() {
+            try {
+                const response = await fetch(`${FLASK_SERVER}/status`);
+                const data = await response.json();
+                
+                if (data.status === 'running') {
+                    document.getElementById('streamStatus').textContent = 'Connected ✓';
+                    document.getElementById('streamFps').textContent = data.fps[0] || 'Loading...';
+                    document.getElementById('streamStatus').classList.add('connected');
+                } else {
+                    document.getElementById('streamStatus').textContent = 'Initializing...';
+                }
+            } catch (error) {
+                document.getElementById('streamStatus').textContent = 'Server Offline';
+                console.error('Failed to fetch stream status:', error);
+            }
+        }
+        
+        // Update status every 2 seconds
+        setInterval(updateStreamStatus, 2000);
+        
+        // Initial status check
+        setTimeout(updateStreamStatus, 1000);
+        
+        // Log connection attempt
+        console.log('Connecting to Flask server at:', FLASK_SERVER);
+        console.log('Video feed URL:', `${FLASK_SERVER}/video_feed`);
     </script>
 
     <script src="app.js"></script>
