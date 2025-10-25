@@ -2,7 +2,25 @@
 
 This guide explains how to stream live object detection video from your YOLOv8 model to the SiteGuard web interface.
 
-## 🚀 Quick Start
+## 🎥 WEBCAM ONLY - Quick Start (Recommended)
+
+**The simplest way to get webcam detection streaming:**
+
+### Option 1: Using the Python launcher (Easiest!)
+```bash
+python start_webcam_detection.py
+```
+
+### Option 2: Manual command
+```bash
+python flask_stream_server.py --video_paths 0 --dfp bestt.dfp --post_model bestt_post.onnx
+```
+
+Then open: `SiteGaurd/live-view.html` in your browser
+
+---
+
+## 🚀 Detailed Setup
 
 ### 1. Install Flask Dependencies
 
@@ -102,3 +120,17 @@ To use the original OpenCV window display, run:
 python run_objectiondetection.py --video_paths /dev/video0 --dfp bestt.dfp --post_model bestt_post.onnx
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+cd /Users/mohm/Documents/prog/SiteGuard && chmod +x start_webcam_stream.sh start_webcam_detection.py

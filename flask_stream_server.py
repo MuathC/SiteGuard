@@ -53,13 +53,41 @@ class Yolo8sMxaStreamer:
 
         # Initialize video captures, models, and dimensions for each stream
         for i, video_path in enumerate(video_paths):
-            if "/dev/video" in video_path:
+            # Detect if it's a webcam
+            if "/dev/video" in video_path or video_path.isdigit():
                 self.srcs_are_cams[i] = True
+                # Convert to integer index if it's a number
+                video_idx = int(video_path.split('video')[-1]) if "/dev/video" in video_path else int(video_path)
+                vidcap = cv2.VideoCapture(video_idx)
+                print(f"🎥 Opening webcam index {video_idx}...")
             else:
                 self.srcs_are_cams[i] = False
-
-            vidcap = cv2.VideoCapture(video_path)
+                vidcap = cv2.VideoCapture(video_path)
+                print(f"📁 Opening video file: {video_path}")
+            
+            if not vidcap.isOpened():
+                print(f"❌ ERROR: Cannot open video source {video_path}")
+                # Try alternative indices for webcam
+                if self.srcs_are_cams[i]:
+                    for alt_idx in [0, 1, 2]:
+                        print(f"🔍 Trying alternative webcam index {alt_idx}...")
+                        vidcap = cv2.VideoCapture(alt_idx)
+                        if vidcap.isOpened():
+                            print(f"✅ Success with index {alt_idx}!")
+                            break
+                
+                if not vidcap.isOpened():
+                    raise RuntimeError(f"Cannot open video source: {video_path}")
+            
+            # Set webcam properties for better performance
+            if self.srcs_are_cams[i]:
+                vidcap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+                vidcap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+                vidcap.set(cv2.CAP_PROP_FPS, 30)
+                vidcap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Minimize latency
+            
             self.streams.append(vidcap)
+            print(f"✅ Video source {i} opened successfully")
 
             # Get frame dimensions
             self.dims[i] = (int(vidcap.get(cv2.CAP_PROP_FRAME_WIDTH)),
